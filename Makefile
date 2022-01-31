@@ -424,11 +424,11 @@ HOST_LFS_LDFLAGS := $(shell getconf LFS_LDFLAGS 2>/dev/null)
 HOST_LFS_LIBS := $(shell getconf LFS_LIBS 2>/dev/null)
 
 ifneq ($(LLVM),)
-HOSTCC	= clang
-HOSTCXX	= clang++
+HOSTCC	= ${CHOST}-clang
+HOSTCXX	= ${CHOST}-clang++
 else
-HOSTCC	= gcc
-HOSTCXX	= g++
+HOSTCC	= ${CHOST}-gcc
+HOSTCXX	= ${CHOST}-g++
 endif
 
 export KBUILD_USERCFLAGS := -Wall -Wmissing-prototypes -Wstrict-prototypes \
@@ -443,7 +443,7 @@ KBUILD_HOSTLDLIBS   := $(HOST_LFS_LIBS) $(HOSTLDLIBS)
 # Make variables (CC, etc...)
 CPP		= $(CC) -E
 ifneq ($(LLVM),)
-CC		= clang
+CC		= ${CHOST}-clang
 LD		= ld.lld
 AR		= llvm-ar
 NM		= llvm-nm
@@ -453,7 +453,7 @@ READELF		= llvm-readelf
 STRIP		= llvm-strip
 else
 CC		= $(CROSS_COMPILE)gcc
-LD		= $(CROSS_COMPILE)ld
+LD		= $(CROSS_COMPILE)ld.bfd
 AR		= $(CROSS_COMPILE)ar
 NM		= $(CROSS_COMPILE)nm
 OBJCOPY		= $(CROSS_COMPILE)objcopy
